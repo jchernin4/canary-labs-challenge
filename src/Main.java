@@ -27,40 +27,44 @@ public class Main {
 
                 String resp = sc.nextLine();
 
-                String[] respSplit = resp.split(" ");
-                switch (respSplit[0]) {
-                    case "select":
-                        if (respSplit.length != 2) {
-                            System.out.println("Invalid select command. Usage: select header1,header2,...");
+                try {
+                    String[] respSplit = resp.split(" ");
+                    switch (respSplit[0]) {
+                        case "select":
+                            if (respSplit.length != 2) {
+                                System.out.println("Invalid select command. Usage: select header1,header2,...");
+                                break;
+                            }
+
+                            SelectOperation so = new SelectOperation(respSplit[1].split(","));
+                            String[][] selectResp = so.execute(headers, values);
+                            print2dArray(selectResp);
                             break;
-                        }
 
-                        SelectOperation so = new SelectOperation(respSplit[1].split(","));
-                        String[][] selectResp = so.execute(headers, values);
-                        print2dArray(selectResp);
-                        break;
+                        case "sort":
+                            if (respSplit.length != 3 || !Arrays.asList("asc","desc").contains(respSplit[2])) {
+                                System.out.println("Invalid sort command. Usage: sort header asc|desc");
+                                break;
+                            }
 
-                    case "sort":
-                        if (respSplit.length != 3 || !Arrays.asList("asc","desc").contains(respSplit[2])) {
-                            System.out.println("Invalid sort command. Usage: sort header asc|desc");
+                            SortOperation sortOp = new SortOperation(respSplit[1], respSplit[2]);
+                            String[][] sortResp = sortOp.execute(headers, values);
+                            print2dArray(sortResp);
                             break;
-                        }
 
-                        SortOperation sortOp = new SortOperation(respSplit[1], respSplit[2]);
-                        String[][] sortResp = sortOp.execute(headers, values);
-                        print2dArray(sortResp);
-                        break;
-
-                    case "filter":
-                        if (respSplit.length != 4 || !Arrays.asList("<", ">", "=").contains(respSplit[2])) {
-                            System.out.println("Invalid filter command. Usage: filter header <|>|= value");
+                        case "filter":
+                            if (respSplit.length != 4 || !Arrays.asList("<", ">", "=").contains(respSplit[2])) {
+                                System.out.println("Invalid filter command. Usage: filter header <|>|= value");
+                                break;
+                            }
+                            FilterOperation filterOp = new FilterOperation(respSplit[1], respSplit[2],
+                                    Double.parseDouble(respSplit[3]));
+                            String[][] filterResp = filterOp.execute(headers, values);
+                            print2dArray(filterResp);
                             break;
-                        }
-                        FilterOperation filterOp = new FilterOperation(respSplit[1], respSplit[2],
-                                Double.parseDouble(respSplit[3]));
-                        String[][] filterResp = filterOp.execute(headers, values);
-                        print2dArray(filterResp);
-                        break;
+                    }
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Error: " + e.getMessage());
                 }
             }
         }

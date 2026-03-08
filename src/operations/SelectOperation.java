@@ -1,5 +1,6 @@
 package operations;
 import java.util.Arrays;
+import java.util.List;
 
 public class SelectOperation extends CsvOperation {
     private String[] toSelect;
@@ -9,6 +10,12 @@ public class SelectOperation extends CsvOperation {
     }
 
     public String[][] execute(String[] headers, String[][] values) {
+        List<String> headerList = Arrays.asList(headers);
+        for (String col : toSelect) {
+            if (!headerList.contains(col)) {
+                throw new IllegalArgumentException("Unknown column: " + col);
+            }
+        }
         String[][] result = new String[values.length][toSelect.length];
 
         int[] headerIndexes = new int[toSelect.length];

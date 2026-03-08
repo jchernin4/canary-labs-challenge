@@ -1,6 +1,7 @@
 package operations;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class FilterOperation extends CsvOperation {
     private String comparison;
@@ -14,8 +15,13 @@ public class FilterOperation extends CsvOperation {
     }
 
     public String[][] execute(String[] headers, String[][] values) {
+        List<String> headerList = Arrays.asList(headers);
+        if (!headerList.contains(header)) {
+            throw new IllegalArgumentException("Unknown column: " + header);
+        }
+
         ArrayList<String[]> result = new ArrayList<>();
-        int headerIndex = Arrays.asList(headers).indexOf(header);
+        int headerIndex = headerList.indexOf(header);
 
         for (int i = 0; i < values.length; i++) {
             double cur = Double.parseDouble(values[i][headerIndex]);

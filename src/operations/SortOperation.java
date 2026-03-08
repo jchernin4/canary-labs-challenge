@@ -1,5 +1,6 @@
 package operations;
 import java.util.Arrays;
+import java.util.List;
 
 public class SortOperation extends CsvOperation {
     private String sortHeader;
@@ -11,7 +12,12 @@ public class SortOperation extends CsvOperation {
     }
 
     public String[][] execute(String[] headers, String[][] values) {
-        int headerIndex = Arrays.asList(headers).indexOf(sortHeader);
+        List<String> headerList = Arrays.asList(headers);
+        if (!headerList.contains(sortHeader)) {
+            throw new IllegalArgumentException("Unknown column: " + sortHeader);
+        }
+
+        int headerIndex = headerList.indexOf(sortHeader);
 
         String[][] result = Arrays.copyOf(values, values.length);
         Arrays.sort(result, (a, b) -> order.equals("desc")
