@@ -2,7 +2,7 @@ package operations;
 import java.util.Arrays;
 import java.util.List;
 
-public class SelectOperation extends CsvOperation {
+public class SelectOperation implements CsvOperation {
     private String[] toSelect;
 
     public SelectOperation(String[] toSelect) {

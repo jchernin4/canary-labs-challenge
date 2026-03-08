@@ -1,5 +1,5 @@
 package operations;
 
-public abstract class CsvOperation {
-    public abstract String[][] execute(String[] headers, String[][] values);
+public interface CsvOperation {
+    public String[][] execute(String[] headers, String[][] values);
 }

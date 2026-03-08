@@ -2,7 +2,7 @@ package operations;
 import java.util.Arrays;
 import java.util.List;
 
-public class SortOperation extends CsvOperation {
+public class SortOperation implements CsvOperation {
     private String sortHeader;
     private String order;
 

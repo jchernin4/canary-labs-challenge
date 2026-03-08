@@ -2,6 +2,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import operations.CsvOperation;
 import operations.FilterOperation;
 import operations.SelectOperation;
 import operations.SortOperation;
@@ -29,16 +30,14 @@ public class Main {
 
                 try {
                     String[] respSplit = resp.split(" ");
+                    CsvOperation op = null;
                     switch (respSplit[0]) {
                         case "select":
                             if (respSplit.length != 2) {
                                 System.out.println("Invalid select command. Usage: select header1,header2,...");
                                 break;
                             }
-
-                            SelectOperation so = new SelectOperation(respSplit[1].split(","));
-                            String[][] selectResp = so.execute(headers, values);
-                            print2dArray(selectResp);
+                            op = new SelectOperation(respSplit[1].split(","));
                             break;
 
                         case "sort":
@@ -46,10 +45,7 @@ public class Main {
                                 System.out.println("Invalid sort command. Usage: sort header asc|desc");
                                 break;
                             }
-
-                            SortOperation sortOp = new SortOperation(respSplit[1], respSplit[2]);
-                            String[][] sortResp = sortOp.execute(headers, values);
-                            print2dArray(sortResp);
+                            op = new SortOperation(respSplit[1], respSplit[2]);
                             break;
 
                         case "filter":
@@ -57,11 +53,11 @@ public class Main {
                                 System.out.println("Invalid filter command. Usage: filter header <|>|= value");
                                 break;
                             }
-                            FilterOperation filterOp = new FilterOperation(respSplit[1], respSplit[2],
-                                    Double.parseDouble(respSplit[3]));
-                            String[][] filterResp = filterOp.execute(headers, values);
-                            print2dArray(filterResp);
+                            op = new FilterOperation(respSplit[1], respSplit[2], Double.parseDouble(respSplit[3]));
                             break;
+                    }
+                    if (op != null) {
+                        print2dArray(op.execute(headers, values));
                     }
                 } catch (IllegalArgumentException e) {
                     System.out.println("Error: " + e.getMessage());

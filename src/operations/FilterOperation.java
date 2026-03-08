@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FilterOperation extends CsvOperation {
+public class FilterOperation implements CsvOperation {
     private String comparison;
     private double value;
     private String header;
