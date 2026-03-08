@@ -1,3 +1,4 @@
+package operations;
 import java.util.Arrays;
 
 public class SelectOperation extends CsvOperation {
